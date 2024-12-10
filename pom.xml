@@ -9,6 +9,12 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <!-- Specify Java version -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -19,7 +25,6 @@
     </dependencies>
 
     <build>
-        <finalName>hello-servlet</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
