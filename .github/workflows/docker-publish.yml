@@ -108,9 +108,6 @@ jobs:
         token: ${{ secrets.GIT_PASSWORD }}
         
     - name: modify the image
-      env:
-        TAGS: ${{ steps.meta.outputs.tags }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
       run: |
         git config user.email jameeghouri@gmail.com  
         git config user.name muhammadjamee
@@ -122,3 +119,5 @@ jobs:
       env:
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
         token: ${{ secrets.GIT_PASSWORD }}
+        TAGS: ${{ steps.meta.outputs.tags }}
+        DIGEST: ${{ steps.build-and-push.outputs.digest }}
