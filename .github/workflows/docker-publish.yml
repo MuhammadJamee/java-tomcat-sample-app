@@ -100,6 +100,9 @@ jobs:
   modifygit:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      TAGS: ${{ steps.meta.outputs.tags }}
+      DIGEST: ${{ steps.build-and-push.outputs.digest }}
     steps:
     - uses: actions/checkout@v3
       name: changing the deployment of git repo
@@ -111,7 +114,7 @@ jobs:
       run: |
         git config user.email jameeghouri@gmail.com  
         git config user.name muhammadjamee
-        sed -Ei "s/(tag:).*/\1 ${{ steps.meta.outputs.tags }}/" tomcat/values-$(basename ${{ github.ref }}).yaml
+        sed -Ei "s/(tag:).*/\1 ${TAGS}/" tomcat/values-$(basename ${{ github.ref }}).yaml
         git add .
         git commit -m "Done by Github Actions Job changemanifest: ${{ github.run_number }}"
         git push origin main
