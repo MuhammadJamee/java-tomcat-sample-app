@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}  # This will include the org/repo in uppercase.
 
 jobs:
   build:
@@ -54,7 +54,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}  # Use build number as tag
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME | toLowerCase }}:${{ github.run_number }}  # Convert repository name to lowercase
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -62,30 +62,7 @@ jobs:
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
-          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}  # Use build number as tag
+          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME | toLowerCase }}:${{ github.run_number }}  # Use lowercase tag
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-  modifygit:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      name: changing the deployment of git repo
-      with:
-        repository: 'MuhammadJamee/argoinfra'
-        token: ${{ secrets.GIT_PASSWORD }}
-        
-    - name: modify the image
-      run: |
-        git config user.email jameeghouri@gmail.com  
-        git config user.name muhammadjamee
-        sed -Ei "s/(tag:).*/\1 ${GITHUB_RUN_NUMBER}/" tomcat/values-$(basename ${{ github.ref }}).yaml  # Replace with GitHub run number
-        git add .
-        git commit -m "Done by Github Actions Job changemanifest: ${{ github.run_number }}"
-        git push origin main
-        
-      env:
-        GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-        token: ${{ secrets.GIT_PASSWORD }}
-        GITHUB_RUN_NUMBER: ${{ github.run_number }}  # Pass GitHub run number as environment variable
