@@ -1,6 +1,8 @@
 name: Docker
 
 on:
+  schedule:
+    - cron: '16 1 * * *'
   push:
     branches: [ "development" ]
     tags: [ 'v*.*.*' ]
@@ -46,13 +48,18 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Set IMAGE_NAME to lowercase
+        id: lowercase_image_name
+        run: |
+          echo "IMAGE_NAME=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME | toLowerCase }}:${{ github.run_number }}  # Convert repository name to lowercase
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}  # Use the lowercase IMAGE_NAME
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -60,7 +67,7 @@ jobs:
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
-          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME | toLowerCase }}:${{ github.run_number }}  # Use lowercase tag
+          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}  # Use lowercase tag
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
