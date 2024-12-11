@@ -105,7 +105,7 @@ jobs:
       name: changing the deployment of git repo
       with:
         repository: 'MuhammadJamee/argoinfra'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GIT_PASSWORD }}
         
     - name: modify the image
       run: |
@@ -118,4 +118,4 @@ jobs:
         
       env:
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GIT_PASSWORD }}
