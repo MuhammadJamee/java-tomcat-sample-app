@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class HelloServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {Github
         // Get the hostname of the server handling the request
         String hostname = System.getenv("HOSTNAME"); // This will work if the environment variable is set in the container
 
@@ -19,7 +19,7 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("text/html");
 
         // Write response with hostname for load balancing verification
-        response.getWriter().write("<h1>Hello, World from Servlet! Github</h1>");
+        response.getWriter().write("<h1>Hello, World from Servlet! Rollback</h1>");
         response.getWriter().write("<p>Request handled by server: " + hostname + "</p>");
     }
 }
