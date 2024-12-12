@@ -19,7 +19,7 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("text/html");
 
         // Write response with hostname for load balancing verification
-        response.getWriter().write("<h1>Hello, World from Servlet! Rollback</h1>");
+        response.getWriter().write("<h1>Hello, World from Servlet! Rollback </h1>");
         response.getWriter().write("<p>Request handled by server: " + hostname + "</p>");
     }
 }
