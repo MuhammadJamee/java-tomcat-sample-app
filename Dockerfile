@@ -13,6 +13,9 @@ RUN mvn clean package -DskipTests
 # Step 2: Copy the WAR file into Tomcat
 FROM tomcat:9.0
 
+# Create the tomcat user (if not already created in the base image)
+RUN groupadd -r tomcat && useradd -r -g tomcat tomcat
+
 # Ensure that the webapps directory is writable
 RUN chmod -R 777 /usr/local/tomcat/webapps
 
@@ -24,6 +27,8 @@ COPY --from=build /app/target/hello-servlet-1.0-SNAPSHOT.war /usr/local/tomcat/w
 
 # Ensure Tomcat has permissions to write to the webapps directory
 RUN chown -R tomcat:tomcat /usr/local/tomcat/webapps
+
+USER tomcat
 
 # Expose Tomcat's default HTTP port (8080)
 EXPOSE 8080
