@@ -24,7 +24,7 @@ COPY --from=build /app/target/hello-servlet-1.0-SNAPSHOT.war /usr/local/tomcat/w
 
 # Ensure Tomcat has permissions to write to the webapps directory
 #RUN chown -R tomcat:tomcat /usr/local/tomcat/webapps
-
+USER root
 # Expose Tomcat's default HTTP port (8080)
 EXPOSE 8080
 
