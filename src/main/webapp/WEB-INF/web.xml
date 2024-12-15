@@ -11,10 +11,10 @@
         <servlet-class>com.example.HelloServlet</servlet-class>
     </servlet>
 
-    <!-- Servlet mapping -->
+    <!-- Servlet mapping to root URL -->
     <servlet-mapping>
         <servlet-name>HelloServlet</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
 </web-app>
