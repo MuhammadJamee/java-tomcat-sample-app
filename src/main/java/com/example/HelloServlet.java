@@ -1,7 +1,7 @@
 package com.example;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class HelloServlet extends HttpServlet {
@@ -23,10 +23,6 @@ public class HelloServlet extends HttpServlet {
 
         // Write response with hostname and client IP for load balancing verification
         response.getWriter().write("<h1>Hello, World from Servlet!</h1>");
-        
-        // Corrected line below (using System instead of system)
-        System.out.println("Hi!");
-        
         response.getWriter().write("<p>Request handled by server: " + hostname + "</p>");
         response.getWriter().write("<p>Client IP: " + clientIP + "</p>");
         response.getWriter().write("<p>Request URI: " + request.getRequestURI() + "</p>");
