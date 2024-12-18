@@ -38,7 +38,7 @@ public class HelloWorldApplication extends SpringBootServletInitializer {
         }
 
         // Return HTML content with hostname, client IP, and request URI for load balancing verification
-        return "<h1>Hello, World from Spring Boot!</h1>" +
+        return "<h1>Hello, World from Spring Boot! This is first change </h1>" +
                "<p>Request handled by server: " + hostname + "</p>" +
                "<p>Client IP: " + clientIP + "</p>" +
                "<p>Request URI: " + requestURI + "</p>";
